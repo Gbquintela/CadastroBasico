@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+type RespostaMensagem struct {
+	Mensagem string `json:"mensagem"`
+}
+
 // Função responsável por criar um Cadastro
 func CreateCadastro(w http.ResponseWriter, r *http.Request) {
 	var newCadastro model.Clientes
@@ -27,8 +31,8 @@ func CreateCadastro(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	view.JSONResponse(w, http.StatusOK, newCadastro)
+	resposta := RespostaMensagem{Mensagem: "Cliente cadastrado com sucesso"}
+	view.JSONResponse(w, http.StatusOK, newCadastro, resposta)
 }
 
 // Função responsável por obter todos os Cadastros
@@ -38,8 +42,8 @@ func GetCadastros(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	view.JSONResponse(w, http.StatusOK, Cadastros)
+	resposta := RespostaMensagem{Mensagem: "Lista de Clientes"}
+	view.JSONResponse(w, http.StatusOK, Cadastros, resposta)
 }
 
 // Função responsável por atualizar um Cadastro
@@ -56,11 +60,12 @@ func UpdateCadastro(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	view.JSONResponse(w, http.StatusOK, updatedCadastro)
+	resposta := RespostaMensagem{Mensagem: "Cliente deletado com sucesso"}
+	view.JSONResponse(w, http.StatusOK, updatedCadastro, resposta)
 }
 
 // Função responsável por deletar um Cadastro
+
 func DeleteCadastro(w http.ResponseWriter, r *http.Request) {
 	var CadastroToDelete model.Clientes
 	err := json.NewDecoder(r.Body).Decode(&CadastroToDelete)
@@ -74,6 +79,6 @@ func DeleteCadastro(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	view.JSONResponse(w, http.StatusOK, map[string]string{"message": "Cliente deletado com sucesso"})
+	resposta := RespostaMensagem{Mensagem: "Cliente deletado com sucesso"}
+	view.JSONResponse(w, http.StatusOK, DeleteCadastro, resposta)
 }
